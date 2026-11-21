@@ -1,0 +1,63 @@
+{
+ "risk": {
+  "auc": {
+   "model": 0.8942,
+   "rules": 0.8915
+  },
+  "average_precision": {
+   "model": 0.7785,
+   "rules": 0.7021
+  },
+  "high_plus_alerts": {
+   "model": {
+    "roc_auc": 0.8942,
+    "average_precision": 0.7785,
+    "alerts_high_plus": 1306,
+    "tp": 921,
+    "fp": 385,
+    "fn": 194,
+    "precision": 0.7052,
+    "recall": 0.826,
+    "false_alerts_per_1000_scenarios": 48.1
+   },
+   "rules": {
+    "roc_auc": 0.8915,
+    "average_precision": 0.7021,
+    "alerts_high_plus": 1267,
+    "tp": 900,
+    "fp": 367,
+    "fn": 215,
+    "precision": 0.7103,
+    "recall": 0.8072,
+    "false_alerts_per_1000_scenarios": 45.9
+   }
+  },
+  "prevalence": 0.1394
+ },
+ "pose": {
+  "model_accuracy": 0.9889,
+  "rules_accuracy": 0.9056,
+  "fall_model": {
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  "fall_rules": {
+   "precision": 0.9231,
+   "recall": 1.0
+  }
+ },
+ "anomaly": {
+  "personal_baseline": {
+   "f1": 0.7241,
+   "precision": 0.6,
+   "recall": 0.913
+  },
+  "population_threshold": {
+   "f1": 0.7368,
+   "precision": 0.9333,
+   "recall": 0.6087
+  }
+ },
+ "data": "synthetic",
+ "reproduce": "ml/training/train_risk.py, train_pose.py, train_anomaly.py (seed 42); see docs/MODEL_EVALUATION.md"
+}
