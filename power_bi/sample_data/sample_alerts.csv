@@ -1,0 +1,40 @@
+id,elderly_id,level,reasons,status,stage,resolved_by,created_at,resolved_at
+1,1,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-27 11:00:00,2026-10-27 11:20:00
+2,1,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-11-09 11:00:00,2026-11-09 11:30:00
+3,1,High,Fall detected and nobody answered,resolved,2,caregiver,2026-11-19 11:19:00,2026-11-19 11:38:00
+4,2,Critical,Fall detected and nobody answered,resolved,1,person,2026-09-25 00:27:00,2026-09-25 00:40:00
+5,2,Critical,Fall detected and nobody answered,resolved,3,person,2026-09-29 15:06:00,2026-09-29 15:18:00
+6,2,High,Fall detected and nobody answered,resolved,2,caregiver,2026-10-21 00:56:00,2026-10-21 01:06:00
+7,2,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-27 12:00:00,2026-10-27 12:18:00
+8,2,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-11-03 12:00:00,2026-11-03 12:37:00
+9,3,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-10 10:00:00,2026-10-10 10:38:00
+10,4,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-09-29 10:00:00,2026-09-29 10:27:00
+11,4,Critical,Fall detected and nobody answered,resolved,1,caregiver,2026-11-02 23:13:00,2026-11-02 23:17:00
+12,5,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-09-28 10:00:00,2026-09-28 10:09:00
+13,5,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-14 10:00:00,2026-10-14 10:09:00
+14,7,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-21 10:00:00,2026-10-21 10:14:00
+15,8,Critical,Fall detected and nobody answered,resolved,3,caregiver,2026-11-07 23:54:00,2026-11-07 23:56:00
+16,9,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-22 10:00:00,2026-10-22 10:25:00
+17,9,High,Fall detected and nobody answered,resolved,3,person,2026-10-30 21:21:00,2026-10-30 21:46:00
+18,10,Critical,Fall detected and nobody answered,resolved,3,person,2026-10-15 12:26:00,2026-10-15 12:44:00
+19,11,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-09-22 12:00:00,2026-09-22 12:09:00
+20,11,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-24 12:00:00,2026-10-24 12:40:00
+21,13,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-09-28 10:00:00,2026-09-28 10:23:00
+22,13,Critical,Fall detected and nobody answered,resolved,3,caregiver,2026-10-10 07:41:00,2026-10-10 08:06:00
+23,13,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-17 10:00:00,2026-10-17 10:37:00
+24,13,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-11-10 10:00:00,2026-11-10 10:24:00
+25,14,Critical,Fall detected and nobody answered,resolved,2,caregiver,2026-09-21 11:17:00,2026-09-21 11:36:00
+26,14,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-02 10:00:00,2026-10-02 10:35:00
+27,15,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-04 12:00:00,2026-10-04 12:07:00
+28,15,High,Fall detected and nobody answered,resolved,3,caregiver,2026-10-22 18:24:00,2026-10-22 18:38:00
+29,15,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-11-11 12:00:00,2026-11-11 12:23:00
+30,16,Critical,Fall detected and nobody answered,resolved,3,caregiver,2026-11-15 04:02:00,2026-11-15 04:13:00
+31,17,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-24 12:00:00,2026-10-24 12:05:00
+32,18,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-15 11:00:00,2026-10-15 11:22:00
+33,19,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-10-14 11:00:00,2026-10-14 11:35:00
+34,19,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-11-09 11:00:00,2026-11-09 11:12:00
+35,20,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-11-12 10:00:00,2026-11-12 10:17:00
+36,21,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-09-26 10:00:00,2026-09-26 10:08:00
+37,21,Critical,Fall detected and nobody answered,resolved,3,caregiver,2026-09-27 09:07:00,2026-09-27 09:25:00
+38,22,Medium,No answer to the daily check-in for 2 hours,resolved,2,caregiver,2026-09-25 11:00:00,2026-09-25 11:13:00
+39,22,High,Fall detected and nobody answered,resolved,2,caregiver,2026-10-18 18:45:00,2026-10-18 18:53:00

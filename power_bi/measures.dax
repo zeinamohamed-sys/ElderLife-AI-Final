@@ -1,0 +1,34 @@
+// ElderLife AI - DAX. Create a Date table first:  Date = CALENDAR(DATE(YEAR(MIN(events[created_date])), 1, 1), TODAY())
+// Relationships (single direction, many -> one): alerts[created_date], risk[created_date], events[created_date], checkins[scheduled_date] -> Date[Date];
+// alerts[elderly_id], risk[elderly_id], events[elderly_id], checkins[elderly_id], careplan[elderly_id] -> people[elderly_id].
+// Not run in Power BI Desktop in the authoring environment; verify numbers against the app's Overview page after import.
+
+People = DISTINCTCOUNT(people[elderly_id])
+
+Alerts = COUNTROWS(alerts)
+Open Alerts = CALCULATE([Alerts], alerts[status] = "open")
+High+ Alerts = CALCULATE([Alerts], alerts[level] IN {"High", "Critical"})
+Critical Alerts = CALCULATE([Alerts], alerts[level] = "Critical")
+Resolved Alerts = CALCULATE([Alerts], NOT ISBLANK(alerts[resolved_by]))
+Resolved By Person % = DIVIDE(CALCULATE([Alerts], alerts[resolved_by] = "person"), [Resolved Alerts])   // proxy for false alarms: the person answered "I'm OK"
+Avg Response Min = AVERAGEX(FILTER(alerts, NOT ISBLANK(alerts[resolved_at])), DATEDIFF(alerts[created_at], alerts[resolved_at], MINUTE))
+Alerts Per Person = DIVIDE([Alerts], [People])
+
+Falls = CALCULATE(COUNTROWS(events), events[kind] = "fall")
+SOS Presses = CALCULATE(COUNTROWS(events), events[kind] = "sos")
+Avg Activity = CALCULATE(AVERAGE(events[value]), events[kind] = "activity")
+Activity vs Baseline % = DIVIDE([Avg Activity], AVERAGE(people[baseline_activity]))
+Falls Last 7 Days = CALCULATE([Falls], DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -7, DAY))
+
+Check-ins = COUNTROWS(checkins)
+Check-ins Answered = CALCULATE([Check-ins], NOT ISBLANK(checkins[responded_at]))
+Check-in Answer % = DIVIDE([Check-ins Answered], [Check-ins])
+Avg Check-in Delay Min = AVERAGEX(FILTER(checkins, NOT ISBLANK(checkins[responded_at])), DATEDIFF(checkins[scheduled_at], checkins[responded_at], MINUTE))
+
+Avg Risk Score = AVERAGE(risk[score])
+Max Risk Level = MAX(risk[level_order])
+People At High Risk = CALCULATE(DISTINCTCOUNT(risk[elderly_id]), risk[level_order] >= 3)
+
+Care Items = COUNTROWS(careplan)
+Care Items Done Today = CALCULATE(COUNTROWS(careplan), careplan[done_date] = FORMAT(TODAY(), "yyyy-mm-dd"))
+Care Done Today % = DIVIDE([Care Items Done Today], [Care Items])
