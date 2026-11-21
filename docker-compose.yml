@@ -1,0 +1,37 @@
+# Start:  cp .env.example .env  (fill the empty values)  then  docker compose up --build
+# Not executed in the authoring sandbox (no Docker there): validate on your machine.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-elderlife}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-elderlife}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-elderlife}"]
+      interval: 5s
+      retries: 10
+    restart: unless-stopped
+  backend:
+    build: ./backend
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-elderlife}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-elderlife}
+    depends_on:
+      db: { condition: service_healthy }
+    ports: ["8000:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      retries: 5
+    restart: unless-stopped
+  frontend:
+    build:
+      context: ./frontend
+      args: { VITE_API: "${VITE_API:-http://localhost:8000}" }
+    depends_on: [backend]
+    ports: ["5173:80"]
+    restart: unless-stopped
+volumes:
+  pgdata:
