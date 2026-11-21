@@ -1,0 +1,14 @@
+{
+ "data": "synthetic",
+ "n_windows": 925,
+ "n_subjects": 30,
+ "duplicate_feature_rows": 0,
+ "best_single_features_macro_f1_depth4_tree": {
+  "z_mean": 0.7683564217457002,
+  "z_max": 0.7429580350084335,
+  "energy": 0.7415603630908301,
+  "smv_mean": 0.7131498256025196,
+  "smv_std": 0.5873042407061845
+ },
+ "conclusion": "No leakage found: folds are subject-wise and there are no duplicate rows. No single feature separates the classes (best single-feature macro-F1 0.77), but the combination of features does, because the generator gives every ADL a fixed posture/frequency signature plus small noise. So 1.0 means the synthetic task is easy, not that the split is broken. Real activity data will be harder; do not quote this number."
+}

@@ -1,0 +1,41 @@
+{
+ "data": "synthetic keypoints (generator in this file)",
+ "note": "NOT real-world evidence",
+ "seed": 42,
+ "persons": {
+  "train": 24,
+  "val": 8,
+  "test": 8
+ },
+ "test_samples": 720,
+ "model": {
+  "accuracy": 0.9889,
+  "fall_precision": 1.0,
+  "fall_recall": 1.0,
+  "fall_false_positives": 0,
+  "fall_false_negatives": 0
+ },
+ "rules": {
+  "accuracy": 0.9056,
+  "fall_precision": 0.9231,
+  "fall_recall": 1.0,
+  "fall_false_positives": 10,
+  "fall_false_negatives": 0
+ },
+ "per_class_recall_model": {
+  "standing": 1.0,
+  "walking": 0.983,
+  "sitting": 0.992,
+  "bending": 0.958,
+  "lying": 1.0,
+  "falling": 1.0
+ },
+ "per_class_recall_rules": {
+  "standing": 0.633,
+  "walking": 1.0,
+  "sitting": 1.0,
+  "bending": 0.875,
+  "lying": 0.925,
+  "falling": 1.0
+ }
+}

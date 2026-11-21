@@ -1,0 +1,102 @@
+{
+ "task": "activity",
+ "data": "synthetic",
+ "note": "SYNTHETIC data: these numbers describe the pipeline on generated windows, NOT real-world accuracy.",
+ "split": {
+  "train_subjects": 18,
+  "val_subjects": 6,
+  "test_subjects": 6,
+  "n_train": 558,
+  "n_test": 182
+ },
+ "models": {
+  "logreg": {
+   "best_params": {
+    "clf__C": 1
+   },
+   "val_f1": 1.0,
+   "fit_seconds": 0.1
+  },
+  "svm_rbf": {
+   "best_params": {
+    "clf__C": 1,
+    "clf__gamma": "scale"
+   },
+   "val_f1": 1.0,
+   "fit_seconds": 0.3
+  },
+  "random_forest": {
+   "best_params": {
+    "clf__max_depth": null,
+    "clf__n_estimators": 150
+   },
+   "val_f1": 1.0,
+   "fit_seconds": 4.7
+  },
+  "gradient_boosting": {
+   "best_params": {
+    "clf__learning_rate": 0.1,
+    "clf__max_depth": 2,
+    "clf__n_estimators": 200
+   },
+   "val_f1": 0.9684,
+   "fit_seconds": 45.5
+  }
+ },
+ "selected": "logreg",
+ "selection_rule": "highest validation F1 (validation subjects are disjoint from training and test)",
+ "test": {
+  "macro_f1": 1.0,
+  "report": {
+   "jumping": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 20.0
+   },
+   "sit_down_hard": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 14.0
+   },
+   "sitting": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 27.0
+   },
+   "stairs": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 28.0
+   },
+   "standing": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 40.0
+   },
+   "walking": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 53.0
+   },
+   "accuracy": 1.0,
+   "macro avg": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 182.0
+   },
+   "weighted avg": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 182.0
+   }
+  }
+ }
+}

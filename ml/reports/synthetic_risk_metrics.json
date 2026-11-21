@@ -1,0 +1,66 @@
+{
+ "data": "synthetic scenarios (generator in this file), label noise 3%",
+ "note": "NOT real-world evidence: see module docstring",
+ "seed": 42,
+ "sizes": {
+  "train": 8000,
+  "val": 4000,
+  "test": 8000
+ },
+ "prevalence_test": 0.1394,
+ "thresholds": {
+  "low": 0.0984,
+  "medium": 0.1181,
+  "high": 0.1416,
+  "critical": 0.17
+ },
+ "rules": {
+  "roc_auc": 0.8915,
+  "average_precision": 0.7021,
+  "alerts_high_plus": 1267,
+  "tp": 900,
+  "fp": 367,
+  "fn": 215,
+  "precision": 0.7103,
+  "recall": 0.8072,
+  "false_alerts_per_1000_scenarios": 45.9
+ },
+ "model_only": {
+  "roc_auc": 0.8942,
+  "average_precision": 0.7785,
+  "alerts_high_plus": 1306,
+  "tp": 921,
+  "fp": 385,
+  "fn": 194,
+  "precision": 0.7052,
+  "recall": 0.826,
+  "false_alerts_per_1000_scenarios": 48.1
+ },
+ "hybrid_model_plus_safety_floor": {
+  "roc_auc": 0.8942,
+  "average_precision": 0.7785,
+  "alerts_high_plus": 1306,
+  "tp": 921,
+  "fp": 385,
+  "fn": 194,
+  "precision": 0.7052,
+  "recall": 0.826,
+  "false_alerts_per_1000_scenarios": 48.1
+ },
+ "feature_weights": {
+  "unanswered_checkin_hours": 0.422,
+  "late_checkin_hours": -0.026,
+  "activity_drop": 0.331,
+  "activity_missing": 0.0,
+  "night": -0.047,
+  "activity_drop_daytime": 0.043,
+  "fall_conf": 0.303,
+  "fall_waiting": -0.077,
+  "fall_unanswered_verified": 0.907,
+  "fall_answered": -0.248,
+  "sos": 0.924,
+  "missed_reminders": -0.139,
+  "age": -0.002,
+  "drop_x_unanswered": 0.524
+ }
+}
