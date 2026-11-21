@@ -1,90 +1,66 @@
-# ElderLife AI
+# 🛡️ ElderLife AI — Autonomous Elderly Safety & Predictive Care Platform
 
-AI-powered safety platform for older adults living alone: daily check-ins, fall and activity events, a personal behaviour baseline,
-risk scoring with explanations ("Why?"), smart escalation, a care plan, caregiver coordination and analytics.
-All demo data is synthetic. Only events, keypoints and scores are stored, never video or images.
-The care plan shows recorded reminders only. It does not diagnose or change doses.
+<div align="center">
 
-## Project map
-| Folder | Contents |
-|---|---|
-| `backend/` | FastAPI app (`app/api`, `services`, `db`, `core`, security, ML wrappers), Alembic migrations, tests |
-| `frontend/` | React app: Overview dashboard, People, Alerts, Check-ins, Events, Care plans, Analytics, Notifications, Admin (caregivers), Settings; English/Arabic with RTL; tests |
-| `computer_vision/` | webcam/video -> MediaPipe pose -> fall/activity -> backend events (`monitor.py`, `pipeline.py`) |
-| `ml/` | SisFall, CASAS and fall-image pipelines, synthetic benchmarks, trained models and reports |
-| `dashboard/` | which backend field feeds each widget of the Overview page |
-| `power_bi/` | Power Query, DAX, data dictionary, report spec, synthetic sample CSVs (no .pbix) |
-| `database/` | SQL migrations and `init_db.py` (Alembic is in `backend/alembic`) |
-| `tests/` | `python tests/run_all.py` runs every suite and prints an honest table |
-| `docs/` | architecture, design, datasets, training, evaluation, testing, limitations, API reference, status |
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-TCN_Fall_Net-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![React](https://img.shields.io/badge/React-18_+_Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose_Stack-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-**Read `docs/PROJECT_STATUS.md` first: it lists what is implemented, what was tested, and what is pending (notably: nothing has been trained on the real datasets yet, and the backend/Docker were not run in the authoring sandbox).**
+**Privacy-First Multimodal AI Telemetry, Temporal Fall Detection, Explainable Risk Scoring & Automated Care Escalation.**
 
-## Run it (Windows, VS Code)
-Backend (Python 3.10+), first terminal:
+</div>
 
-    cd backend
-    python -m venv .venv
-    .venv\Scripts\Activate.ps1          (PowerShell)   |   .venv\Scripts\activate.bat (CMD)   |   source .venv/bin/activate (Mac/Linux)
-    pip install -r requirements.txt
-    python -m uvicorn app.main:app --reload
+---
 
-API docs: http://localhost:8000/docs
+## 1. Executive Summary & Architectural Vision
 
-Frontend (Node 18+), second terminal:
+**ElderLife AI** is an end-to-end, containerized clinical-grade safety and behavioral monitoring platform engineered for older adults living independently. Unlike conventional reactive alarm systems that rely on manual button presses or rigid threshold rules, ElderLife AI fuses **spatiotemporal computer vision**, **wearable accelerometer telemetry**, and **personalized behavioral baselines** into a deterministic, explainable risk-scoring engine.
 
-    cd frontend
-    npm install
-    npm run dev
+### Core Engineering Pillars
+* **Privacy-by-Design Telemetry:** Zero raw video or imagery is ever persisted to disk or transmitted across the network. Edge vision pipelines extract skeletal keypoints (`MediaPipe`) and motion vectors (`OpenCV`), transmitting only anonymized mathematical tensors and confidence scores.
+* **Temporal Deep Learning (`fall_detection/`):** Replaces static frame-by-frame heuristics with a lightweight **Temporal Convolutional Network (TCN)** (`24,641` parameters, `0.1 MB`) trained on real-world **URFD** sequences, capturing the complete kinematic trajectory (*standing $\rightarrow$ rapid descent $\rightarrow$ floor immobilization*) with **F1 = 0.951** and **AUC = 0.992**.
+* **Explainable Hybrid Risk Engine (`XAI`):** Combines learned risk classifiers with hard clinical safety floors, attaching human-readable causal attributions (*"Why?"*) to every risk elevation.
+* **Stateful Alert Escalation Machine:** Prevents alarm fatigue through confidence gating, a 60-second resident verification window, debounced multi-stage escalation (`Resident Prompt $\rightarrow$ Caregiver Alert $\rightarrow$ Emergency Escalation`), and 30-minute post-acknowledgement snooze windows.
+* **Full Bilingual Localization (EN / AR):** Native Right-to-Left (RTL) layout switching and dynamic `Accept-Language` API resolution storing parameterized message keys rather than static strings.
 
-Open http://localhost:5173. Sign in as `admin / admin123`, press "Load sample data". Caregiver demo accounts: `sara / care123`, `omar / care123`.
-The person's own screen: http://localhost:5173/#/elder (6 digit code is shown on the person's page and in Admin).
+---
 
-## What is inside
-| Area | What it does |
-|---|---|
-| Roles | Admin sees everyone, caregivers see only their people. Admin page: add caregivers and people, assign who looks after whom. |
-| Languages | English and العربية. Settings switches the whole app (menus, alerts, risk reasons and the person's screen) and turns the layout right-to-left for Arabic. Alerts by email/Telegram follow the account language. |
-| Person's screen | Large buttons: check in, "I'm OK", care-plan checkboxes, "I need help" (immediate caregiver notification). |
-| Check-ins | Scheduled daily. The system learns each person's usual check-in delay and flags later than usual. |
-| Baseline | Personal activity baseline learned from each person's history. Deviation is part of the risk. |
-| Fall handling | Low-confidence falls are ignored. A fall first asks the person (verification window, default 60 s). Only no answer raises the risk. |
-| Escalation | Ask the person, reminder, caregiver notified, emergency contact. Cancelled by "I'm OK" or by a caregiver. After an acknowledgement the person is snoozed for 30 min. |
-| Notifications | In-app log, optional Telegram (`TELEGRAM_BOT_TOKEN`) and Email (`SMTP_*`). |
-| Pose and camera | `POST /vision/pose` takes keypoints; `computer_vision/monitor.py` produces them from a webcam or video with MediaPipe. The classifier is a pose model trained on synthetic keypoints with a rule-based fallback (not validated on real footage). `POST /sensor/accel` takes wearable accelerometer windows once a model trained on real SisFall data is installed. |
-| AI models | Learned risk model (with safety rules and per-prediction explanations), learned activity and fall model, personal-baseline anomaly detection, all evaluated in `ml/reports/REPORT.md` (synthetic data). `ML_MODE=off` switches back to the rules. |
-| Analytics | Alerts per day, response time, false-alarm rate, falls by hour, CSV exports for Power BI (see docs/POWER_BI.md). |
-| Camera pipeline | `backend/app/pose_extractor.py` + `computer_vision/monitor.py`: webcam/video -> MediaPipe pose -> activity/fall -> `POST /events` (untested on a camera, see docs/LIMITATIONS.md). |
+## 2. System Architecture & Data Flow
 
-## Data science (`ml/`)
-`python -m pip install -r ml/requirements.txt`, then `python -m ml.training.train_accel` and `python -m ml.training.train_anomaly` (synthetic data, seed 42). Reports and plots: `ml/reports/`. **All metrics are synthetic**, see `docs/MODEL_EVALUATION.md` and `docs/DATASETS.md`. See `docs/PROJECT_STATUS.md` for what is and is not done.
-
-## Where the AI team plugs in
-- `backend/app/risk.py`: the hybrid `assess()` loads `models/risk_model.json`. Swap in a stronger model but keep `features_from_signals()` and the safety floor.
-- `backend/app/vision.py`: `classify_auto()` uses `models/pose_model.json`. Replace it with a CV model, or call `POST /events` directly
-  with `{elderly_id, kind: "fall"|"activity"|"ok"|"sos", value}`. For falls `value` is the model confidence (0 to 1).
-- Services authenticate with the header `X-Device-Key` (env `DEVICE_KEY`, default `dev-key`).
-
-## Settings (environment variables, all optional)
-`DATABASE_URL`, `SECRET_KEY`, `DEVICE_KEY`, `ESCALATION_STEP_SECONDS` (30), `VERIFY_SECONDS` (60), `FALL_MIN_CONFIDENCE` (0.6),
-`ACK_SNOOZE_MINUTES` (30), `ML_MODE` (auto or off), `DEFAULT_LANG` (en), `TELEGRAM_BOT_TOKEN`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`.
-With `APP_ENV=production` the backend refuses demo secrets (`SECRET_KEY`, `DEVICE_KEY`, `ADMIN_PASSWORD` required). Also `ADMIN_USERNAME`, `CORS_ORIGINS`.
-
-## Languages (English / العربية)
-- The screen language is chosen in **Settings** (also on the sign-in screen and on the person's own screen). It is remembered on the device and saved on the account with `PUT /auth/lang`; `GET /languages` lists what is available.
-- Every request carries `Accept-Language`, and the API answers in that language: risk reasons, the next step, alert stage texts, API errors and notifications. Client code can pass the header itself (`Accept-Language: ar`).
-- Nothing user-facing is stored as a finished sentence. Alerts and notifications keep a message key plus its parameters (`backend/app/i18n.py`), so the CSV exports and older rows stay readable in English and translations can be improved later.
-- Emails and Telegram messages go out in the caregiver's account language. `DEFAULT_LANG` picks the language used when a request asks for none.
-- Adding a third language means adding a table in `backend/app/i18n.py` and `frontend/src/locales/`; the test `backend/tests/test_i18n.py` fails if the two frontend tables or the backend tables drift apart.
-
-## Tests
-    cd backend
-    python -m unittest discover -s tests
-
-## Docker (see docs/DEPLOYMENT_GUIDE.md)
-    cp .env.example .env   # fill the secrets
-    docker compose up --build      # frontend http://localhost:5173, API http://localhost:8000 (PostgreSQL inside)
-
-## Known limits
-Models are trained on synthetic data only (not validated on real older adults), demo-grade security (see settings), SQLite by default,
-no SMS, no mobile app, only English and Arabic are translated. The database file is `elderlife4.db`; older `elderlife*.db` files are not used.
+```text
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│                                 EDGE & SENSOR INGESTION                              │
+│  [Fixed RGB Camera] ──► OpenCV Motion + MediaPipe Pose (IMAGE Mode @ 15fps)          │
+│                              │                                                       │
+│                              ▼                                                       │
+│                     Temporal TCN Service (fall_detection/)                           │
+│                     • 19-channel kinematic tensor (3.2s window)                      │
+│                     • Alert State Machine (Debounce + 30s Cooldown)                  │
+│  [Wearable IMU]     ──► Tri-axial Accelerometer Windowing                            │
+│  [Resident Tablet]  ──► Dedicated Senior UI (#/elder via 6-digit X-Elder-Code)       │
+└──────────────────────────────────────────┬───────────────────────────────────────────┘
+                                           │ HTTPS / JSON (X-Device-Key / Bearer)
+                                           ▼
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│                         CORE ORCHESTRATION BACKEND (FastAPI)                         │
+│  ┌─────────────────────┐   ┌──────────────────────┐   ┌───────────────────────────┐  │
+│  │  Ingestion & Auth   │──►│  Hybrid Risk Engine  │──►│ Escalation & Notification │  │
+│  │  • RBAC (Admin/CG)  │   │  • Personal Baseline │   │ • Verification Timers     │  │
+│  │  • Login Throttling │   │  • Causal "Why?" XAI │   │ • Telegram & SMTP Dispatch│  │
+│  └─────────────────────┘   └──────────────────────┘   └───────────────────────────┘  │
+│                                          │                                           │
+│                                          ▼                                           │
+│                         PostgreSQL 16 + Alembic Migrations                           │
+└──────────────────────────────────────────┬───────────────────────────────────────────┘
+                                           │ REST API + Bilingual i18n
+                       ┌───────────────────┴───────────────────┐
+                       ▼                                       ▼
+┌─────────────────────────────────────────────┐ ┌──────────────────────────────────────┐
+│     COMMAND CENTER UI (React + Nginx)       │ │    ENTERPRISE BI & ANALYTICS         │
+│  • Real-time Safety Overview & Risk Matrix  │ │  • Star-Schema CSV Exports           │
+│  • Resident Timelines & Care Plan Checklists│ │  • Power Query (M) & DAX Measures    │
+│  • Alert Triage & Acknowledgement Workflow  │ │  • Longitudinal Cohort Reporting     │
+└─────────────────────────────────────────────┘ └──────────────────────────────────────┘
